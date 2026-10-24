@@ -1,0 +1,34 @@
+name: Web build check
+on:
+  push:
+    paths:
+      - 'index.html'
+      - 'web/**'
+      - 'assets/**'
+      - '.github/workflows/web-check.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'web/**'
+      - 'assets/**'
+      - '.github/workflows/web-check.yml'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check JavaScript syntax
+        run: node --check web/app.js
+      - name: Verify Pages entry points and assets
+        run: |
+          test -s index.html
+          test -s web/style.css
+          test -s web/app.js
+          test -s assets/original/toolbarlogo.png
+          test -s assets/original/new_file.png
+          test -s assets/original/open_file.png
+          test -s assets/original/save_file.png
+          test -s assets/original/key.png
