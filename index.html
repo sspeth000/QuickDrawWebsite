@@ -2,46 +2,76 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#111827">
-  <title>Quick Draw — Draw & Paint</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#292929">
+  <title>Quick Draw - Draw &amp; Paint</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="brand-mark">✎</span><div><h1>Quick Draw</h1><p>Draw &amp; Paint</p></div></div>
-    <div class="top-actions">
-      <button id="undoBtn" class="secondary" title="Undo (Ctrl/Cmd+Z)">↶ <span>Undo</span></button>
-      <button id="redoBtn" class="secondary" title="Redo (Ctrl/Cmd+Y)">↷ <span>Redo</span></button>
-      <button id="saveBtn" class="primary">⇩ <span>Save PNG</span></button>
+  <header class="toolbar">
+    <a class="brand" href="./" aria-label="Quick Draw home"><span class="brand-icon">✎</span><span>Quick Draw</span></a>
+    <div class="toolbar-actions">
+      <button id="menuBtn" class="icon-button" aria-label="Open menu" title="Menu">☰</button>
+      <button id="undoBtn" class="icon-button" aria-label="Undo" title="Undo">↶</button>
+      <button id="redoBtn" class="icon-button" aria-label="Redo" title="Redo">↷</button>
     </div>
+    <nav id="menuPanel" class="menu-panel hidden" aria-label="Drawing menu">
+      <button data-action="new">▧ <span>New drawing</span></button>
+      <button data-action="open">▱ <span>Open image…</span></button>
+      <button data-action="save">⇩ <span>Save drawing</span></button>
+      <button data-action="share">↗ <span>Share drawing</span></button>
+      <button data-action="about">ⓘ <span>About Quick Draw</span></button>
+      <button data-action="more">▣ <span>More apps</span></button>
+    </nav>
   </header>
-  <main class="layout">
-    <aside class="tools panel">
-      <section><h2>Tools</h2><div class="tool-grid">
-        <button class="tool active" data-tool="pen" aria-pressed="true"><span>✎</span>Pen</button>
-        <button class="tool" data-tool="marker" aria-pressed="false"><span>▰</span>Marker</button>
-        <button class="tool" data-tool="eraser" aria-pressed="false"><span>◩</span>Eraser</button>
-        <button class="tool" data-tool="line" aria-pressed="false"><span>／</span>Line</button>
-        <button class="tool" data-tool="rect" aria-pressed="false"><span>▱</span>Rectangle</button>
-        <button class="tool" data-tool="circle" aria-pressed="false"><span>◯</span>Circle</button>
-      </div></section>
-      <section><h2>Color</h2><div class="color-row">
-        <input id="colorPicker" type="color" value="#252a37" aria-label="Choose color">
-        <div class="color-value"><strong id="colorHex">#252A37</strong><small>Current color</small></div>
-      </div><div class="swatches" aria-label="Color presets">
-        <button data-color="#252a37" style="--swatch:#252a37" aria-label="Charcoal"></button><button data-color="#ef4444" style="--swatch:#ef4444" aria-label="Red"></button><button data-color="#f97316" style="--swatch:#f97316" aria-label="Orange"></button><button data-color="#eab308" style="--swatch:#eab308" aria-label="Yellow"></button><button data-color="#22c55e" style="--swatch:#22c55e" aria-label="Green"></button><button data-color="#06b6d4" style="--swatch:#06b6d4" aria-label="Cyan"></button><button data-color="#3b82f6" style="--swatch:#3b82f6" aria-label="Blue"></button><button data-color="#8b5cf6" style="--swatch:#8b5cf6" aria-label="Purple"></button><button data-color="#ec4899" style="--swatch:#ec4899" aria-label="Pink"></button><button data-color="#ffffff" style="--swatch:#ffffff" aria-label="White"></button>
-      </div></section>
-      <section><div class="range-label"><h2>Brush size</h2><output id="sizeValue">6 px</output></div><input id="brushSize" class="range" type="range" min="1" max="48" value="6" aria-label="Brush size"><div class="range-ends"><span>Fine</span><span>Thick</span></div><div class="preview-wrap"><div id="brushPreview"></div></div></section>
-      <section class="canvas-actions"><h2>Canvas</h2><button id="whiteBtn" class="wide secondary">▢ White background</button><button id="clearBtn" class="wide danger">⌫ Clear canvas</button></section>
-      <p class="hint">Tip: Use Line, Rectangle, or Circle to make clean shapes. Undo works too.</p>
-    </aside>
-    <section class="workspace">
-      <div class="canvas-heading"><div><h2>Your canvas</h2><p>Let your ideas take shape.</p></div><span class="status"><i></i> Ready to draw</span></div>
-      <div class="canvas-frame"><canvas id="canvas" aria-label="Drawing canvas"></canvas><div id="emptyHint" class="empty-hint"><span>✎</span><strong>Start creating</strong><small>Click or touch the canvas and draw something!</small></div></div>
-      <footer class="canvas-footer"><span>Quick Draw Studio</span><span id="dimensions">Canvas ready</span></footer>
+  <main class="app">
+    <section class="canvas-panel" aria-label="Drawing area">
+      <div class="canvas-topline"><span>DRAWING SHEET</span><span id="status">Ready</span></div>
+      <div class="canvas-frame"><canvas id="canvas" aria-label="Drawing canvas"></canvas><div id="emptyHint" class="empty-hint"><span>✎</span><strong>Draw something!</strong><small>Touch, click, or use a stylus</small></div></div>
+      <div class="canvas-footer"><span>Quick Draw · Draw &amp; Paint</span><span id="dimensions"></span></div>
     </section>
+    <aside class="controls">
+      <section class="control-section">
+        <h2>Brush &amp; eraser</h2>
+        <div class="tool-buttons">
+          <button id="brushBtn" class="mode-button selected"><span>✎</span> Brush</button>
+          <button id="eraserBtn" class="mode-button"><span>▰</span> Eraser</button>
+        </div>
+        <div class="size-line"><span id="sizeLabel">Brush size</span><strong id="sizeValue">Medium</strong></div>
+        <div id="brushSizes" class="size-options" aria-label="Brush size">
+          <button data-size="2" data-name="Ultra-small">XS</button><button data-size="4" data-name="Small">S</button><button data-size="7" data-name="Medium" class="active">M</button><button data-size="12" data-name="Large">L</button><button data-size="20" data-name="Ultra-large">XL</button><button data-size="32" data-name="Extreme-large">XXL</button>
+        </div>
+      </section>
+      <section class="control-section">
+        <div class="section-heading"><h2>Paint colors</h2><button id="customColorBtn" class="custom-color" title="Choose custom color"><span>＋</span><input id="colorPicker" type="color" value="#000000" aria-label="Custom color"></button></div>
+        <div id="palette" class="palette" aria-label="44 paint colors"></div>
+        <div class="current-color"><span id="colorPreview"></span><div><strong id="colorHex">#000000</strong><small>Selected color</small></div></div>
+      </section>
+      <section class="control-section">
+        <h2>Sheet background</h2>
+        <button id="backgroundBtn" class="background-button"><span id="backgroundPreview"></span><span>Change background</span><span class="chevron">›</span></button>
+      </section>
+      <section class="control-section quick-actions">
+        <h2>Quick actions</h2>
+        <button id="clearBtn" class="wide-button">⌫ <span>Clear drawing</span></button>
+        <button id="saveBtn" class="wide-button">⇩ <span>Save as PNG</span></button>
+      </section>
+      <p class="footnote">A browser recreation inspired by the original Android app.</p>
+    </aside>
   </main>
+  <input id="openInput" type="file" accept="image/*" hidden>
+  <dialog id="confirmDialog" class="dialog">
+    <h2 id="confirmTitle">New Drawing Sheet</h2><p id="confirmMessage">Do you want to start new?</p>
+    <div class="dialog-actions"><button class="text-button" data-close>Cancel</button><button id="confirmYes" class="accent-button">Yes</button></div>
+  </dialog>
+  <dialog id="backgroundDialog" class="dialog palette-dialog">
+    <h2>Background color</h2><p>Choose a color for your drawing sheet.</p><div id="backgroundPalette" class="palette large-palette"></div>
+    <div class="dialog-actions"><button class="text-button" data-close>Close</button></div>
+  </dialog>
+  <dialog id="aboutDialog" class="dialog">
+    <div class="about-mark">✎</div><h2>Quick Draw</h2><p>Draw &amp; Paint — web edition</p><p class="about-copy">A browser-based recreation of the original drawing app's palette, brush sizes, eraser, background colors, and drawing menu.</p>
+    <div class="dialog-actions"><button class="text-button" data-close>Close</button><button id="aboutUpdate" class="accent-button">App page</button></div>
+  </dialog>
   <script src="app.js"></script>
 </body>
 </html>
