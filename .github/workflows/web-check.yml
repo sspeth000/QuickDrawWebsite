@@ -32,8 +32,10 @@ jobs:
           test -s assets/original/open_file.png
           test -s assets/original/save_file.png
           test -s assets/original/key.png
-          grep -q 'id="undoButton"' index.html
-          grep -q 'id="redoButton"' index.html
+          grep -q 'id="palette"' index.html
+          grep -q 'id="backgroundButton"' index.html
+          grep -q 'id="menuToggle"' index.html
           grep -q 'assets/original/toolbarlogo.png' index.html
-          grep -q 'recordHistory' web/app.js
+          grep -q 'function record' web/app.js
+          grep -q 'Choose Brush Size' web/app.js
           grep -q 'destination-out' web/app.js
