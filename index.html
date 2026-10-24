@@ -1,57 +1,48 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Quick Draw</title>
-<style>
-:root{color-scheme:light;--ink:#262a30;--paper:#f4f5f7;--line:#d9dde3;--accent:#3568d4}
-*{box-sizing:border-box}body{margin:0;font:16px system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--paper);color:var(--ink)}
-header{background:#30343a;color:white;padding:13px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}h1{font-size:1.25rem;margin:0}.actions,.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-button,.file-label,select{font:inherit;border:1px solid var(--line);border-radius:9px;background:white;color:var(--ink);padding:9px 12px;cursor:pointer}header button{background:#454b54;color:white;border-color:#5e6671}button:focus-visible,.file-label:focus-within{outline:3px solid #9bbaff;outline-offset:2px}
-main{max-width:1100px;margin:auto;padding:14px;display:grid;gap:12px}.panel{background:white;border:1px solid var(--line);border-radius:13px;padding:12px}.tools{margin-bottom:10px}.tools button.active{background:var(--accent);color:white;border-color:var(--accent)}.field{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.field label{font-weight:600;font-size:.9rem}.palette{display:grid;grid-template-columns:repeat(11,minmax(23px,1fr));gap:6px;margin-top:10px}.swatch{padding:0;width:100%;aspect-ratio:1;border-radius:7px;border:1px solid #b9bdc5;min-height:24px}.swatch[aria-pressed=true]{outline:3px solid var(--accent);outline-offset:2px}
-#stage{background:white;border:1px solid var(--line);border-radius:13px;overflow:hidden;min-height:280px;height:min(60vh,650px);touch-action:none}canvas{display:block;width:100%;height:100%;touch-action:none}input[type=range]{max-width:180px}.hint{font-size:.88rem;color:#5c626d;margin:0}.status{min-height:1.3em;font-size:.88rem;color:#4c5666}
-@media(max-width:560px){main{padding:8px}.palette{grid-template-columns:repeat(8,minmax(24px,1fr))}#stage{height:55vh;min-height:240px}.field{align-items:flex-start}.tools button{flex:1}}
-</style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#263746">
+<title>Quick Draw — Draw &amp; Paint</title>
+<link rel="stylesheet" href="web/style.css">
 </head>
 <body>
-<header><h1>✎ Quick Draw</h1><div class="actions"><button id="newBtn">New</button><button id="openBtn">Open image</button><button id="saveBtn">Save PNG</button><input id="fileInput" type="file" accept="image/*" hidden></div></header>
+<header class="appbar">
+  <div class="brand"><img src="assets/quick-draw-mark.svg" alt="" width="36" height="36"><div><strong>Quick Draw</strong><small>Draw &amp; Paint · browser reconstruction</small></div></div>
+  <button id="menuToggle" class="icon-button" aria-label="Open menu" aria-expanded="false">☰</button>
+  <nav id="menu" class="menu" hidden>
+    <button data-action="new">New drawing sheet</button>
+    <button data-action="open">Open image…</button>
+    <button data-action="save">Save drawing…</button>
+    <button data-action="share">Share drawing…</button>
+    <button data-action="about">About Quick Draw</button>
+    <a href="https://rkb11ritesh.wordpress.com/2019/01/23/android-applications-by-rkb/" target="_blank" rel="noreferrer">More apps ↗</a>
+  </nav>
+</header>
 <main>
-<section class="panel" aria-label="Drawing tools">
-<div class="tools"><button class="active" id="brushBtn">Brush</button><button id="eraserBtn">Eraser</button><button id="undoBtn">Undo</button></div>
-<div class="field"><label for="size">Brush size</label><input id="size" type="range" min="1" max="36" value="7"><output id="sizeValue">7 px</output><label for="background">Sheet color</label><input id="background" type="color" value="#ffffff"></div>
-<div class="palette" id="palette" aria-label="Paint colors"></div>
-</section>
-<section id="stage" aria-label="Drawing canvas"><canvas id="canvas"></canvas></section>
-<p class="hint">Draw with your finger, mouse, or stylus. Open an image to use it as a reference, then save your drawing as a PNG.</p><p class="status" id="status" role="status" aria-live="polite"></p>
+  <section class="drawing-panel" aria-label="Drawing area">
+    <div class="sheet-heading"><span>Drawing sheet</span><span id="status" role="status">Ready</span></div>
+    <div id="canvasWrap"><canvas id="drawing" aria-label="Drawing canvas"></canvas></div>
+    <div class="bottom-tools">
+      <button class="tool-button selected" id="brushButton" aria-pressed="true"><span class="tool-icon">✎</span><span>Brush</span></button>
+      <button class="tool-button" id="eraserButton" aria-pressed="false"><span class="tool-icon">▱</span><span>Eraser</span></button>
+      <button class="tool-button" id="sizeButton"><span class="tool-icon">◉</span><span>Brush size</span></button>
+      <button class="tool-button" id="eraserSizeButton"><span class="tool-icon">⌫</span><span>Eraser size</span></button>
+      <button class="tool-button" id="backgroundButton"><span class="tool-icon">▧</span><span>Background</span></button>
+    </div>
+  </section>
+  <section class="palette-panel">
+    <div class="section-heading"><div><h2>Paint colors</h2><p>Tap a color to paint with it.</p></div><span id="currentColor" class="current-color" aria-label="Selected color"></span></div>
+    <div id="palette" class="palette" aria-label="Paint color palette"></div>
+    <div class="palette-footer"><span>44 colors from the original app</span><button id="saveButton" class="primary">Save drawing</button></div>
+  </section>
+  <footer>Browser-compatible reconstruction based on the supplied Quick Draw 1.47 APK and decompiled source. Android-only features are adapted for the web.</footer>
 </main>
-<script>
-(()=> {
-const colors=['#000000','#2d2f30','#5b5c5e','#999a9c','#c8cdd2','#ffffff','#642c00','#7b4f2d','#ab8669','#ff0000','#9c2222','#ef5454','#d49090','#00ff00','#447444','#41a141','#56d956','#9be29b','#0000ff','#40507c','#488cb3','#6565d7','#b2b2e1','#ff00d5','#e678d3','#943484','#ff7b00','#ffa048','#e9b685','#00fff6','#1ba39c','#5bcac7','#92d4d2','#b300ff','#80399e','#c865f2','#d19ee9','#ffff00','#94941a','#e7e73e','#f7f79a','#ffb569','#ffcc98','#e6be96'];
-const canvas=document.querySelector('#canvas'),stage=document.querySelector('#stage'),ctx=canvas.getContext('2d',{willReadFrequently:false});
-const size=document.querySelector('#size'),sizeValue=document.querySelector('#sizeValue'),background=document.querySelector('#background'),status=document.querySelector('#status');
-let color='#000000',erasing=false,drawing=false,last=null,strokes=[],current=null,reference=null,canvasWidth=0,canvasHeight=0;
-function message(s){status.textContent=s}
-function setupCanvas(){const rect=stage.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1);const old=canvas.width?document.createElement('canvas'):null;if(old){old.width=canvas.width;old.height=canvas.height;old.getContext('2d').drawImage(canvas,0,0)}canvasWidth=Math.max(1,rect.width);canvasHeight=Math.max(1,rect.height);canvas.width=Math.round(canvasWidth*dpr);canvas.height=Math.round(canvasHeight*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);redraw();if(old)message('Canvas resized.')}
-function redraw(){ctx.save();ctx.setTransform(canvas.width/canvasWidth,0,0,canvas.height/canvasHeight,0,0);ctx.clearRect(0,0,canvasWidth,canvasHeight);ctx.fillStyle=background.value;ctx.fillRect(0,0,canvasWidth,canvasHeight);if(reference){ctx.globalCompositeOperation='source-over';ctx.globalAlpha=.72;ctx.drawImage(reference,0,0,canvasWidth,canvasHeight);ctx.globalAlpha=1}for(const s of strokes)paintStroke(s);if(current)paintStroke(current);ctx.restore()}
-function paintStroke(s){ctx.save();ctx.globalCompositeOperation=s.erase?'destination-out':'source-over';ctx.strokeStyle=s.color;ctx.fillStyle=s.color;ctx.lineWidth=s.width;ctx.lineCap='round';ctx.lineJoin='round';if(s.points.length===1){ctx.beginPath();ctx.arc(s.points[0].x,s.points[0].y,s.width/2,0,Math.PI*2);ctx.fill()}else{ctx.beginPath();ctx.moveTo(s.points[0].x,s.points[0].y);for(let i=1;i<s.points.length;i++)ctx.lineTo(s.points[i].x,s.points[i].y);ctx.stroke()}ctx.restore()}
-function point(e){const r=canvas.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
-function begin(e){e.preventDefault();drawing=true;canvas.setPointerCapture?.(e.pointerId);last=point(e);current={color,width:Number(size.value),erase:erasing,points:[last]};redraw()}
-function move(e){if(!drawing||!current)return;e.preventDefault();const p=point(e);current.points.push(p);last=p;redraw()}
-function end(e){if(!drawing)return;drawing=false;if(current){strokes.push(current);current=null}last=null;redraw()}
-canvas.addEventListener('pointerdown',begin);canvas.addEventListener('pointermove',move);canvas.addEventListener('pointerup',end);canvas.addEventListener('pointercancel',end);
-function setMode(isEraser){erasing=isEraser;document.querySelector('#brushBtn').classList.toggle('active',!erasing);document.querySelector('#eraserBtn').classList.toggle('active',erasing);message(erasing?'Eraser selected.':'Brush selected.')}
-document.querySelector('#brushBtn').addEventListener('click',()=>setMode(false));document.querySelector('#eraserBtn').addEventListener('click',()=>setMode(true));
-size.addEventListener('input',()=>sizeValue.value=size.value+' px');
-document.querySelector('#undoBtn').addEventListener('click',()=>{strokes.pop();redraw();message('Last stroke undone.')});
-document.querySelector('#newBtn').addEventListener('click',()=>{if(confirm('Start a new drawing? This clears the current strokes and reference image.')){strokes=[];current=null;reference=null;redraw();message('New drawing sheet ready.')}});
-background.addEventListener('input',redraw);
-const palette=document.querySelector('#palette');colors.forEach(c=>{const b=document.createElement('button');b.className='swatch';b.style.background=c;b.title=c;b.setAttribute('aria-label','Choose '+c);b.setAttribute('aria-pressed',String(c===color));b.addEventListener('click',()=>{color=c;setMode(false);palette.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true')});palette.appendChild(b)});
-document.querySelector('#openBtn').addEventListener('click',()=>document.querySelector('#fileInput').click());
-document.querySelector('#fileInput').addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{reference=img;strokes=[];redraw();URL.revokeObjectURL(url);message('Image opened as a drawing reference.')};img.onerror=()=>{URL.revokeObjectURL(url);message('Could not open that image.')};img.src=url;e.target.value=''});
-document.querySelector('#saveBtn').addEventListener('click',()=>{const a=document.createElement('a');a.download='QuickDraw.png';a.href=canvas.toDataURL('image/png');a.click();message('PNG download started.')});
-if('ResizeObserver'in window)new ResizeObserver(setupCanvas).observe(stage);else window.addEventListener('resize',setupCanvas);
-setupCanvas();
-})();
-</script>
+<input id="fileInput" type="file" accept="image/*" hidden>
+<dialog id="pickerDialog"><div class="dialog-header"><h2 id="dialogTitle">Choose</h2><button id="dialogClose" aria-label="Close dialog">✕</button></div><p id="dialogHint" class="dialog-hint"></p><div id="dialogChoices" class="dialog-choices"></div></dialog>
+<dialog id="confirmDialog"><div class="dialog-header"><h2 id="confirmTitle">New drawing sheet</h2><button data-confirm="no" aria-label="Close dialog">✕</button></div><p id="confirmMessage">Clear the current drawing?</p><div class="dialog-actions"><button data-confirm="no">Cancel</button><button class="primary" data-confirm="yes">Continue</button></div></dialog>
+<dialog id="aboutDialog"><div class="dialog-header"><h2>About Quick Draw</h2><button data-about-close aria-label="Close dialog">✕</button></div><div class="about-content"><img src="assets/quick-draw-mark.svg" alt="" width="68" height="68"><h3>Quick Draw — Draw &amp; Paint</h3><p>Original Android package: <code>com.draw.rkb.drawsimply</code></p><p>Version 1.47 · Browser reconstruction</p><p>This web build recreates the drawing workflow using recovered behavior and the original 44-color palette. It is not the Android APK running inside Safari.</p><a href="https://play.google.com/store/apps/details?id=com.draw.rkb.drawsimply" target="_blank" rel="noreferrer">Original Play Store listing ↗</a></div></dialog>
+<script src="web/app.js" defer></script>
 </body>
 </html>
