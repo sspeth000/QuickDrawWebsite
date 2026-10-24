@@ -16,14 +16,21 @@ This repository has been restarted using the supplied **Quick Draw 1.47 XAPK** a
 ## GitHub Pages build
 - [Open the live browser build](https://sspeth000.github.io/QuickDrawWebsite/)
 - `index.html`: browser app shell
-- `web/app.js`: Canvas drawing, the recovered 44-color palette, size presets, background chooser, open/save/share and dialogs
-- `web/style.css`: responsive styling
+- `web/app.js`: Canvas drawing, the recovered 44-color palette, brush/eraser presets, background chooser, open/save/share, history, and dialogs
+- `web/style.css`: responsive styling and keyboard focus states
+- Undo/redo buttons plus `Ctrl/⌘+Z`, `Ctrl/⌘+Shift+Z`, and `Ctrl/⌘+Y` shortcuts; history tracks strokes, background changes, new sheets, and opened images
+- Eraser clears the editable canvas layer, including an opened image, matching the recovered Android `DrawingView` clear-mode behavior
 - `assets/quick-draw-mark.svg`: newly recreated browser mark, not claimed to be the original APK icon
 
 ## Android source
 - `app/` and the Gradle files are a separate reconstructed Android project retained in the repository.
 - `android-recovered/` holds readable source recovered from the supplied decompiler archive where added. Decompiled source is not the original developer's full project and can contain decompiler artifacts.
 - The complete uploaded decompiler ZIP and XAPK are the authoritative source artifacts; the current browser build does not yet mirror every APK binary asset or every decompiled file into this Git repository. That is an outstanding part of the reconstruction, not something this README claims is complete.
+
+## Fidelity notes
+- Confirmed from decompiled Java: rounded anti-aliased strokes, bitmap-backed drawing, clear-mode erasing, drawing an opened image onto the canvas, the 44-color palette, and the named menu actions.
+- Recreated rather than confirmed pixel-for-pixel: browser layout spacing, type, icon sizing, dialog styling, and exact resource-defined brush/eraser dimensions. The original compiled XML layouts have not yet been decoded, so this is a behavior-led reconstruction rather than an exact visual clone.
+- Browser history and keyboard shortcuts are extra conveniences, not claims about the Android app.
 
 ## Important limitations
 A raw APK is not browser-executable. GitHub Pages can host the HTML/JavaScript port; it cannot launch Android bytecode in Safari. This reconstruction aims to reproduce app behavior and visuals in a browser while preserving Android source separately. Browser file picking and PNG download replace Android gallery intents and MediaStore saving.
