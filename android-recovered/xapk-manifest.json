@@ -112,5 +112,6 @@
       "id": "config.tr"
     }
   ],
-  "source_note": "Recreated from manifest.json inside the user-supplied XAPK; this metadata file is a transcription of the archive manifest."
+  "source_note": "Recreated from manifest.json inside the user-supplied XAPK; this metadata file is a transcription of the archive manifest.",
+  "total_size": 5106108
 }
