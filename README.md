@@ -1,28 +1,29 @@
-# Quick Draw — Android project reconstruction
+# Quick Draw — Draw & Paint 1.47 reconstruction
 
-The previous browser-only mock-up has been removed. This repository is now structured as an Android Studio project.
+This repository has been restarted using the supplied **Quick Draw 1.47 XAPK** and **decompiler ZIP** as the reference. The live GitHub Pages app is a browser port of recovered behavior, not a raw APK running in Safari.
 
-## Current status
-This is a **reconstructed Android implementation**, not a byte-identical restoration of the original APK. The provided decompiler archive includes decompiled Java and Smali, but not the complete original Android Studio project, original Gradle configuration, or complete resource tree. Recovered behavior and reconstructed code must not be mistaken for original source files.
+## Source artifacts inspected
+- XAPK manifest: package `com.draw.rkb.drawsimply`, app name Quick Draw, version 1.47, minimum Android SDK 21, target SDK 34.
+- Base APK: `com.draw.rkb.drawsimply.apk`; 751 ZIP entries, including compiled Android resources and original drawable assets.
+- Decompiler archive: 5,650 entries; contains both `sources/` Java output and `smali/` output.
+- Recovered application classes in the archive: `MainActivity.java`, `DrawingView.java`, `AboutActivity.java`, `HelpActivity.java`, `SplashScreenActivity.java`, `Places.java`, and generated `R.java`.
 
-## Implemented
-- Freehand drawing with anti-aliased, round strokes
-- Brush and eraser modes with size presets
-- The 44-color palette identified from the decompiled app
-- Sheet background selection and new-sheet confirmation
-- Open an image from the Android document picker as a drawing reference
-- Undo and PNG export through Android's document picker
+## Behavior verified in decompiled source
+- The original `MainActivity` defines the 44 paint colors and has actions for brush-size selection, eraser-size selection, sheet background selection, New, Open, Save, About, Share, and More Apps.
+- The original `DrawingView` draws anti-aliased rounded paths to a bitmap-backed canvas, switches to clear-mode for erasing, supports a reference image, and clears the sheet.
+- The original app uses Android layouts, drawables, intents, and MediaStore. Those Android-specific pieces cannot run directly in GitHub Pages and must be adapted for a browser.
 
-## Project
-- `settings.gradle`, `build.gradle`, `gradle.properties`
-- `app/build.gradle`
-- `app/src/main/AndroidManifest.xml`
-- `app/src/main/java/com/sspeth/quickdraw/MainActivity.java`
-- `app/src/main/java/com/sspeth/quickdraw/DrawingView.java`
-- `app/src/main/res/values/`
+## GitHub Pages build
+- [Open the live browser build](https://sspeth000.github.io/QuickDrawWebsite/)
+- `index.html`: browser app shell
+- `web/app.js`: Canvas drawing, the recovered 44-color palette, size presets, background chooser, open/save/share and dialogs
+- `web/style.css`: responsive styling
+- `assets/quick-draw-mark.svg`: newly recreated browser mark, not claimed to be the original APK icon
 
-## Build
-Open the repository in Android Studio with JDK 17 and allow Gradle to sync. Run the `app` configuration on an Android device or emulator. This project has not yet been verified by a successful Android build in this environment.
+## Android source
+- `app/` and the Gradle files are a separate reconstructed Android project retained in the repository.
+- `android-recovered/` holds readable source recovered from the supplied decompiler archive where added. Decompiled source is not the original developer's full project and can contain decompiler artifacts.
+- The complete uploaded decompiler ZIP and XAPK are the authoritative source artifacts; the current browser build does not yet mirror every APK binary asset or every decompiled file into this Git repository. That is an outstanding part of the reconstruction, not something this README claims is complete.
 
-## Original app details
-The decompiled package name is `com.draw.rkb.drawsimply`. This reconstruction uses `com.sspeth.quickdraw` so it is clearly distinguished from the original app. A full source/resource restoration still requires bringing the original decompiled classes and extracted APK resources into the repository and resolving decompiler/build issues.
+## Important limitations
+A raw APK is not browser-executable. GitHub Pages can host the HTML/JavaScript port; it cannot launch Android bytecode in Safari. This reconstruction aims to reproduce app behavior and visuals in a browser while preserving Android source separately. Browser file picking and PNG download replace Android gallery intents and MediaStore saving.
