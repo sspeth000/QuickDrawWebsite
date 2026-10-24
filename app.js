@@ -25,7 +25,7 @@
   function endDraw(){if(!drawing)return;drawing=false;ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;hasMarks=true;saveState();status.textContent='Ready';last=null;}
   canvas.addEventListener('pointerup',endDraw);canvas.addEventListener('pointercancel',endDraw);canvas.addEventListener('lostpointercapture',endDraw);
   undoBtn.addEventListener('click',()=>restore(historyIndex-1));redoBtn.addEventListener('click',()=>restore(historyIndex+1));
-  picker.addEventListener('input',()=>{selectColor(picker.value);});document.getElementById('customColorBtn').addEventListener('click',()=>picker.click());
+  picker.addEventListener('input',()=>{selectColor(picker.value);});
   document.getElementById('backgroundBtn').addEventListener('click',()=>document.getElementById('backgroundDialog').showModal());
   document.getElementById('menuBtn').addEventListener('click',()=>document.getElementById('menuPanel').classList.toggle('hidden'));
   document.addEventListener('click',e=>{if(!e.target.closest('#menuBtn')&&!e.target.closest('#menuPanel'))document.getElementById('menuPanel').classList.add('hidden');});
