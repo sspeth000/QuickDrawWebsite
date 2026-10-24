@@ -32,6 +32,9 @@ jobs:
           test -s assets/original/open_file.png
           test -s assets/original/save_file.png
           test -s assets/original/key.png
+          test -s assets/original/brush-icon.svg
+          test -s assets/original/eraser-icon.svg
+          test -s assets/original/background-icon.svg
           grep -q 'id="palette"' index.html
           grep -q 'id="backgroundButton"' index.html
           grep -q 'id="menuToggle"' index.html
