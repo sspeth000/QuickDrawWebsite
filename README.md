@@ -17,7 +17,9 @@ This repository has been restarted using the supplied **Quick Draw 1.47 XAPK** a
 - [Open the live browser build](https://sspeth000.github.io/QuickDrawWebsite/)
 - `index.html`: browser app shell
 - `web/app.js`: Canvas drawing, the recovered 44-color palette, brush/eraser presets, background chooser, open/save/share, history, and dialogs
-- `web/style.css`: responsive styling and keyboard focus states
+- `web/style.css`: Android-style screen proportions, dark tool strip, flexible white canvas, horizontal palette, dialog styling, and keyboard focus states
+- `android-recovered/layouts/recovered-layout-spec.md`: decoded measurements and structure from the original compiled Android layouts
+- `assets/original/brush-icon.svg`, `eraser-icon.svg`, and `background-icon.svg`: vector paths reconstructed from the original APK's compiled drawable resources
 - Undo/redo buttons plus `Ctrl/⌘+Z`, `Ctrl/⌘+Shift+Z`, and `Ctrl/⌘+Y` shortcuts; history tracks strokes, background changes, new sheets, and opened images
 - Eraser clears the editable canvas layer, including an opened image, matching the recovered Android `DrawingView` clear-mode behavior
 - `assets/quick-draw-mark.svg`: newly recreated browser mark, not claimed to be the original APK icon
@@ -29,7 +31,8 @@ This repository has been restarted using the supplied **Quick Draw 1.47 XAPK** a
 
 ## Fidelity notes
 - Confirmed from decompiled Java: rounded anti-aliased strokes, bitmap-backed drawing, clear-mode erasing, drawing an opened image onto the canvas, the 44-color palette, and the named menu actions.
-- Recreated rather than confirmed pixel-for-pixel: browser layout spacing, type, icon sizing, dialog styling, and exact resource-defined brush/eraser dimensions. The original compiled XML layouts have not yet been decoded, so this is a behavior-led reconstruction rather than an exact visual clone.
+- Recovered from compiled XML: the main screen's vertical order, dark three-control strip, flexible white drawing view, horizontal 44-color palette, palette swatch dimensions, dialog layout proportions, and the original tool vector paths. See `android-recovered/layouts/recovered-layout-spec.md`.
+- Still approximated: platform-specific toolbar/menu rendering, Android density/font metrics, dialog chrome, and exact pixel-level behavior across devices. The web version is a close structural reconstruction, not a pixel-identical Android screenshot.
 - Browser history and keyboard shortcuts are extra conveniences, not claims about the Android app.
 
 ## Important limitations
