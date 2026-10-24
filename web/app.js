@@ -1,10 +1,10 @@
 (()=>{'use strict';
 const $=id=>document.getElementById(id);
 const colors=['#000000','#2d2f30','#5b5c5e','#999a9c','#c8cdd2','#ffffff','#642c00','#7b4f2d','#ab8669','#ff0000','#9c2222','#ef5454','#d49090','#00ff00','#447444','#41a141','#56d956','#9be29b','#0000ff','#40507c','#488cb3','#6565d7','#b2b2e1','#ff00d5','#e678d3','#943484','#ff7b00','#ffa048','#e9b685','#00fff6','#1ba39c','#5bcac7','#92d4d2','#b300ff','#80399e','#c865f2','#d19ee9','#ffff00','#94941a','#e7e73e','#f7f79a','#ffb569','#ffcc98','#e6be96'];
-const brushSizes=[['Ultra-small',2],['Small',5],['Medium',9],['Large',15],['Ultra-large',24],['Extreme-large',36]];
-const eraserSizes=[['Medium',12],['Large',24],['Ultra-large',38]];
+const brushSizes=[['Ultra-small',5],['Small',10],['Medium',20],['Large',30],['Ultra-large',40],['Extreme-large',100]];
+const eraserSizes=[['Medium',16],['Large',35],['Ultra-large',50]];
 const canvas=$('drawing'),ctx=canvas.getContext('2d'),palette=$('palette');
-let activeColor='#000000',mode='brush',brushSize=5,eraserSize=24,background='#ffffff',drawing=false,current=null,strokes=[],image=null,history=[],historyAt=-1,confirmResolve=null;
+let activeColor='#000000',mode='brush',brushSize=10,eraserSize=16,background='#ffffff',drawing=false,current=null,strokes=[],image=null,history=[],historyAt=-1,confirmResolve=null;
 const setStatus=(s,error=false)=>{const n=$('status');n.textContent=s;n.classList.toggle('error',error)};
 function state(){return{strokes:strokes.slice(),background,image}}
 function record(){if(historyAt<history.length-1)history=history.slice(0,historyAt+1);history.push(state());if(history.length>80)history.shift();historyAt=history.length-1}
