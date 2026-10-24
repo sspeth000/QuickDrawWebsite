@@ -8,43 +8,40 @@
 <link rel="stylesheet" href="web/style.css">
 </head>
 <body>
+<div class="app-shell">
 <header class="appbar">
-  <div class="brand"><img src="assets/original/toolbarlogo.png" alt="" width="36" height="36"><div><strong>Quick Draw</strong><small>Draw &amp; Paint · browser reconstruction</small></div></div>
+  <div class="brand"><img src="assets/original/toolbarlogo.png" alt="" width="25" height="25"><div><strong>Quick Draw</strong></div></div>
   <button id="menuToggle" class="icon-button" aria-label="Open menu" aria-expanded="false">☰</button>
   <nav id="menu" class="menu" hidden>
-    <button data-action="new"><img class="menu-icon" src="assets/original/new_file.png" alt="">New drawing sheet</button>
-    <button data-action="open"><img class="menu-icon" src="assets/original/open_file.png" alt="">Open image…</button>
-    <button data-action="save"><img class="menu-icon" src="assets/original/save_file.png" alt="">Save drawing…</button>
-    <button data-action="share">Share drawing…</button>
-    <button data-action="about">About Quick Draw</button>
-    <a href="https://rkb11ritesh.wordpress.com/2019/01/23/android-applications-by-rkb/" target="_blank" rel="noreferrer">More apps ↗</a>
+    <button data-action="new"><img class="menu-icon" src="assets/original/new_file.png" alt="">New Drawing Sheet</button>
+    <button data-action="open"><img class="menu-icon" src="assets/original/open_file.png" alt="">Open Image</button>
+    <button data-action="save"><img class="menu-icon" src="assets/original/save_file.png" alt="">Save Drawing</button>
+    <button data-action="share">Share Drawing</button>
+    <button data-action="undo">Undo</button>
+    <button data-action="redo">Redo</button>
+    <button data-action="about">About</button>
+    <a href="https://rkb11ritesh.wordpress.com/2019/01/23/android-applications-by-rkb/" target="_blank" rel="noreferrer">More Apps ↗</a>
   </nav>
 </header>
-<main>
-  <section class="drawing-panel" aria-label="Drawing area">
-    <div class="sheet-heading"><span>Drawing sheet</span><span id="status" role="status">Ready</span></div>
-    <div id="canvasWrap"><canvas id="drawing" aria-label="Drawing canvas"></canvas></div>
-    <div class="bottom-tools">
-      <button class="tool-button selected" id="brushButton" aria-pressed="true"><span class="tool-icon">✎</span><span>Brush</span></button>
-      <button class="tool-button" id="eraserButton" aria-pressed="false"><span class="tool-icon">▱</span><span>Eraser</span></button>
-      <button class="tool-button" id="sizeButton"><span class="tool-icon">◉</span><span>Brush size</span></button>
-      <button class="tool-button" id="eraserSizeButton"><span class="tool-icon">⌫</span><span>Eraser size</span></button>
-      <button class="tool-button" id="backgroundButton"><span class="tool-icon">▧</span><span>Background</span></button>
-      <button class="tool-button" id="undoButton" disabled aria-label="Undo last action"><span class="tool-icon">↶</span><span>Undo</span></button>
-      <button class="tool-button" id="redoButton" disabled aria-label="Redo last undone action"><span class="tool-icon">↷</span><span>Redo</span></button>
-    </div>
+<main class="drawing-screen">
+  <section class="control-strip" aria-label="Drawing tools">
+    <button class="tool-button selected" id="brushButton" aria-pressed="true"><span>Brush</span><span class="tool-icon">✎</span></button>
+    <button class="tool-button" id="eraserButton" aria-pressed="false"><span>Eraser</span><span class="tool-icon">▱</span></button>
+    <button class="tool-button" id="backgroundButton"><span>Background</span><span class="tool-icon">▧</span></button>
   </section>
-  <section class="palette-panel">
-    <div class="section-heading"><div><h2>Paint colors</h2><p>Tap a color to paint with it.</p></div><span id="currentColor" class="current-color" aria-label="Selected color"></span></div>
+  <section class="canvas-region" aria-label="Drawing area">
+    <canvas id="drawing" aria-label="Drawing canvas"></canvas>
+    <span id="status" role="status" class="status">Ready</span>
+  </section>
+  <section class="palette-panel" aria-label="Paint colors">
     <div id="palette" class="palette" aria-label="Paint color palette"></div>
-    <div class="palette-footer"><span>44 colors from the original app</span><button id="saveButton" class="primary">Save drawing</button></div>
   </section>
-  <footer>Browser reconstruction based on the supplied Quick Draw 1.47 APK and decompiled source. Undo: Ctrl/⌘+Z · Redo: Ctrl/⌘+Shift+Z. Android-only features are adapted for the web.</footer>
 </main>
+</div>
 <input id="fileInput" type="file" accept="image/*" hidden>
 <dialog id="pickerDialog"><div class="dialog-header"><h2 id="dialogTitle">Choose</h2><button id="dialogClose" aria-label="Close dialog">✕</button></div><p id="dialogHint" class="dialog-hint"></p><div id="dialogChoices" class="dialog-choices"></div></dialog>
 <dialog id="confirmDialog"><div class="dialog-header"><h2 id="confirmTitle">New drawing sheet</h2><button data-confirm="no" aria-label="Close dialog">✕</button></div><p id="confirmMessage">Clear the current drawing?</p><div class="dialog-actions"><button data-confirm="no">Cancel</button><button class="primary" data-confirm="yes">Continue</button></div></dialog>
-<dialog id="aboutDialog"><div class="dialog-header"><h2>About Quick Draw</h2><button data-about-close aria-label="Close dialog">✕</button></div><div class="about-content"><img src="assets/original/toolbarlogo.png" alt="" width="68" height="68"><h3>Quick Draw — Draw &amp; Paint</h3><p>Original Android package: <code>com.draw.rkb.drawsimply</code></p><p>Version 1.47 · Browser reconstruction</p><p>This web build recreates the drawing workflow using recovered behavior and the original 44-color palette. It is not the Android APK running inside Safari.</p><a href="https://play.google.com/store/apps/details?id=com.draw.rkb.drawsimply" target="_blank" rel="noreferrer">Original Play Store listing ↗</a></div></dialog>
+<dialog id="aboutDialog"><div class="dialog-header"><h2>About Quick Draw</h2><button data-about-close aria-label="Close dialog">✕</button></div><div class="about-content"><img src="assets/original/toolbarlogo.png" alt="" width="68" height="68"><h3>Quick Draw — Draw &amp; Paint</h3><p>Original Android package: <code>com.draw.rkb.drawsimply</code></p><p>Version 1.47 · Browser reconstruction</p><p>This browser version reconstructs the drawing interface from the original Android resources. It does not run APK bytecode.</p><a href="https://play.google.com/store/apps/details?id=com.draw.rkb.drawsimply" target="_blank" rel="noreferrer">Original Play Store listing ↗</a></div></dialog>
 <script src="web/app.js" defer></script>
 </body>
 </html>
