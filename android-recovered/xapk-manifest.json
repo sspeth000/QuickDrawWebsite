@@ -1,0 +1,116 @@
+{
+  "xapk_version": 2,
+  "package_name": "com.draw.rkb.drawsimply",
+  "name": "Quick Draw",
+  "version_code": "47",
+  "version_name": "1.47",
+  "min_sdk_version": "21",
+  "target_sdk_version": "34",
+  "permissions": [
+    "android.permission.INTERNET",
+    "android.permission.ACCESS_NETWORK_STATE",
+    "android.permission.WRITE_EXTERNAL_STORAGE",
+    "com.draw.rkb.drawsimply.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION",
+    "android.permission.READ_EXTERNAL_STORAGE"
+  ],
+  "split_configs": [
+    "config.ar",
+    "config.es",
+    "config.it",
+    "config.xxhdpi",
+    "config.ja",
+    "config.de",
+    "config.pt",
+    "config.en",
+    "config.zh",
+    "config.vi",
+    "config.in",
+    "config.ko",
+    "config.ru",
+    "config.my",
+    "config.th",
+    "config.hi",
+    "config.fr",
+    "config.tr"
+  ],
+  "icon": "icon.png",
+  "split_apks": [
+    {
+      "file": "com.draw.rkb.drawsimply.apk",
+      "id": "base"
+    },
+    {
+      "file": "config.ar.apk",
+      "id": "config.ar"
+    },
+    {
+      "file": "config.es.apk",
+      "id": "config.es"
+    },
+    {
+      "file": "config.it.apk",
+      "id": "config.it"
+    },
+    {
+      "file": "config.xxhdpi.apk",
+      "id": "config.xxhdpi"
+    },
+    {
+      "file": "config.ja.apk",
+      "id": "config.ja"
+    },
+    {
+      "file": "config.de.apk",
+      "id": "config.de"
+    },
+    {
+      "file": "config.pt.apk",
+      "id": "config.pt"
+    },
+    {
+      "file": "config.en.apk",
+      "id": "config.en"
+    },
+    {
+      "file": "config.zh.apk",
+      "id": "config.zh"
+    },
+    {
+      "file": "config.vi.apk",
+      "id": "config.vi"
+    },
+    {
+      "file": "config.in.apk",
+      "id": "config.in"
+    },
+    {
+      "file": "config.ko.apk",
+      "id": "config.ko"
+    },
+    {
+      "file": "config.ru.apk",
+      "id": "config.ru"
+    },
+    {
+      "file": "config.my.apk",
+      "id": "config.my"
+    },
+    {
+      "file": "config.th.apk",
+      "id": "config.th"
+    },
+    {
+      "file": "config.hi.apk",
+      "id": "config.hi"
+    },
+    {
+      "file": "config.fr.apk",
+      "id": "config.fr"
+    },
+    {
+      "file": "config.tr.apk",
+      "id": "config.tr"
+    }
+  ],
+  "source_note": "Recreated from manifest.json inside the user-supplied XAPK; this metadata file is a transcription of the archive manifest."
+}
