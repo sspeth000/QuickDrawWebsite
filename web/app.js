@@ -33,7 +33,28 @@ function openImage(){$('fileInput').click()}
 $('fileInput').addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{image=img;strokes=[];render();record();setStatus('Image opened');URL.revokeObjectURL(url)};img.onerror=()=>{setStatus('Could not open that image',true);URL.revokeObjectURL(url)};img.src=url;e.target.value=''});
 function exportCanvas(){const dpr=Math.max(1,window.devicePixelRatio||1),out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;const o=out.getContext('2d');o.fillStyle=background;o.fillRect(0,0,out.width,out.height);o.drawImage(canvas,0,0);return out}
 function save(){const out=exportCanvas();out.toBlob(blob=>{if(!blob){setStatus('Could not save drawing',true);return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Quick-Draw.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('Drawing saved as PNG')},'image/png')}
-async function share(){const out=exportCanvas();out.toBlob(async blob=>{if(!blob)return;try{const file=new File([blob],'Quick-Draw.png',{type:'image/png'});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]}))await navigator.share({title:'Quick Draw',files:[file]});else{save();setStatus('Sharing unavailable here; drawing downloaded instead')}}catch(e){if(e.name!=='AbortError')setStatus('Sharing was not completed',true)}},'image/png')}
+async function share(){
+  const out=exportCanvas();
+  setStatus('Preparing drawing to share…');
+  out.toBlob(async blob=>{
+    if(!blob){setStatus('Could not prepare drawing to share',true);return}
+    const file=new File([blob],'Quick-Draw.png',{type:'image/png'});
+    try{
+      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+        await navigator.share({title:'Quick Draw',text:'My drawing from Quick Draw',files:[file]});
+        setStatus('Drawing shared');
+      }else{
+        save();
+        setStatus('Sharing is not supported here; drawing downloaded instead');
+      }
+    }catch(e){
+      if(e.name==='AbortError'){setStatus('Sharing cancelled');return}
+      /* Some browsers reject file sharing after canvas export takes time. Still provide a useful action. */
+      save();
+      setStatus('This browser could not open sharing; drawing downloaded instead');
+    }
+  },'image/png');
+}
 $('shareButton').addEventListener('click',share);
 $('menuToggle').addEventListener('click',()=>{const m=$('menu'),open=m.hidden;m.hidden=!open;$('menuToggle').setAttribute('aria-expanded',String(open))});
 $('menu').addEventListener('click',async e=>{const b=e.target.closest('[data-action]');if(!b)return;$('menu').hidden=true;$('menuToggle').setAttribute('aria-expanded','false');switch(b.dataset.action){case'new':await newSheet();break;case'open':openImage();break;case'save':if(await askConfirm('Save Drawing','Do you want to save this drawing?'))save();break;case'share':await share();break;case'undo':undo();break;case'redo':redo();break;case'about':$('aboutDialog').showModal();break}});
