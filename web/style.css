@@ -75,3 +75,16 @@ dialog,.dialog-header button,.choice,.dialog-actions button,.primary,.background
   border: 4px solid #212121 !important;
   box-shadow: inset 0 0 0 1px rgba(255,255,255,.9) !important;
 }
+
+
+/* Preserve the original two-tone selected swatch frame: dark outer border, white inner ring, then color. */
+#palette > button.swatch.selected {
+  border: 4px solid #212121 !important;
+  box-shadow: inset 0 0 0 2px #ffffff !important;
+  background-clip: padding-box !important;
+}
+.background-picker #dialogChoices > button.background-swatch.selected {
+  border: 4px solid #212121 !important;
+  box-shadow: inset 0 0 0 2px #ffffff !important;
+  background-clip: padding-box !important;
+}
