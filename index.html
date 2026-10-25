@@ -5,13 +5,23 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#263746">
 <title>Quick Draw — Draw &amp; Paint</title>
-<link rel="stylesheet" href="web/style.css?v=palette-no-white-ring-5">
+<link rel="stylesheet" href="web/style.css?v=toolbar-share-icon-6">
 </head>
 <body>
 <div class="app-shell">
 <header class="appbar">
   <div class="brand"><img class="toolbar-nav-icon" src="assets/original/background-icon.svg" alt=""><img src="assets/original/toolbarlogo.png" alt="" width="25" height="25"><div><strong>Quick Draw</strong></div></div>
-  <button id="menuToggle" class="icon-button" aria-label="Open menu" aria-expanded="false">⋮</button>
+  <div class="header-actions">
+    <button id="shareButton" class="icon-button share-button" aria-label="Share drawing" title="Share drawing">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+        <circle cx="18" cy="5" r="3" fill="currentColor"/>
+        <circle cx="6" cy="12" r="3" fill="currentColor"/>
+        <circle cx="18" cy="19" r="3" fill="currentColor"/>
+        <path d="M8.7 10.7 15.3 6.3M8.7 13.3l6.6 4.4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button id="menuToggle" class="icon-button" aria-label="Open menu" aria-expanded="false">⋮</button>
+  </div>
   <nav id="menu" class="menu" hidden>
     <button data-action="new"><img class="menu-icon" src="assets/original/new_file.png" alt="">New Drawing Sheet</button>
     <button data-action="open"><img class="menu-icon" src="assets/original/open_file.png" alt="">Open Image</button>
