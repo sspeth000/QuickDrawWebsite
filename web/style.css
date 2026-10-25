@@ -56,3 +56,22 @@ dialog,.dialog-header button,.choice,.dialog-actions button,.primary,.background
 .background-picker #dialogChoices > button.background-swatch.selected {
   border-radius: 0 !important;
 }
+
+
+/* Match the original app's bold black selection frame around the chosen palette color. */
+#palette > button.swatch {
+  box-sizing: border-box !important;
+  border: 1px solid transparent !important;
+}
+#palette > button.swatch.selected {
+  border: 4px solid #212121 !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.9) !important;
+}
+.background-picker #dialogChoices > button.background-swatch {
+  box-sizing: border-box !important;
+  border: 1px solid transparent !important;
+}
+.background-picker #dialogChoices > button.background-swatch.selected {
+  border: 4px solid #212121 !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.9) !important;
+}
