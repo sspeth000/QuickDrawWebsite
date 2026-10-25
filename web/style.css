@@ -41,3 +41,18 @@
 .appbar,.icon-button,.menu,.menu button,.menu a,.tool-button,.swatch,.swatch.selected,.swatch.selected:after,
 dialog,.dialog-header button,.choice,.dialog-actions button,.primary,.background-picker .background-swatch,
 .background-picker .background-swatch.selected,.choice-icon,.status{border-radius:0!important;}
+
+/* Force square palette swatches in both the main color row and the color-picker dialog. */
+#palette > button.swatch,
+.background-picker #dialogChoices > button.background-swatch {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border-radius: 0 !important;
+  clip-path: none !important;
+  mask-image: none !important;
+  overflow: visible !important;
+}
+#palette > button.swatch.selected,
+.background-picker #dialogChoices > button.background-swatch.selected {
+  border-radius: 0 !important;
+}
