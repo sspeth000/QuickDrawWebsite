@@ -35,3 +35,9 @@
 .background-picker .background-swatch.selected{border:1px solid #212121;box-shadow:inset 0 0 0 1px transparent;}
 /* AppCompat Toolbar uses the action-bar minimum height; keep it consistent across viewport widths. */
 @media(min-width:900px){.appbar{height:56px;min-height:56px;flex-basis:56px}}
+
+
+/* The original app uses square-cornered controls; do not introduce web-style squircles. */
+.appbar,.icon-button,.menu,.menu button,.menu a,.tool-button,.swatch,.swatch.selected,.swatch.selected:after,
+dialog,.dialog-header button,.choice,.dialog-actions button,.primary,.background-picker .background-swatch,
+.background-picker .background-swatch.selected,.choice-icon,.status{border-radius:0!important;}
