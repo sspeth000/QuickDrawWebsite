@@ -33,27 +33,33 @@ function openImage(){$('fileInput').click()}
 $('fileInput').addEventListener('change',e=>{const file=e.target.files&&e.target.files[0];if(!file)return;const url=URL.createObjectURL(file),img=new Image();img.onload=()=>{image=img;strokes=[];render();record();setStatus('Image opened');URL.revokeObjectURL(url)};img.onerror=()=>{setStatus('Could not open that image',true);URL.revokeObjectURL(url)};img.src=url;e.target.value=''});
 function exportCanvas(){const dpr=Math.max(1,window.devicePixelRatio||1),out=document.createElement('canvas');out.width=canvas.width;out.height=canvas.height;const o=out.getContext('2d');o.fillStyle=background;o.fillRect(0,0,out.width,out.height);o.drawImage(canvas,0,0);return out}
 function save(){const out=exportCanvas();out.toBlob(blob=>{if(!blob){setStatus('Could not save drawing',true);return}const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Quick-Draw.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);setStatus('Drawing saved as PNG')},'image/png')}
-async function share(){
-  const out=exportCanvas();
-  setStatus('Preparing drawing to share…');
-  out.toBlob(async blob=>{
-    if(!blob){setStatus('Could not prepare drawing to share',true);return}
-    const file=new File([blob],'Quick-Draw.png',{type:'image/png'});
-    try{
-      if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
-        await navigator.share({title:'Quick Draw',text:'My drawing from Quick Draw',files:[file]});
-        setStatus('Drawing shared');
-      }else{
-        save();
-        setStatus('Sharing is not supported here; drawing downloaded instead');
-      }
-    }catch(e){
-      if(e.name==='AbortError'){setStatus('Sharing cancelled');return}
-      /* Some browsers reject file sharing after canvas export takes time. Still provide a useful action. */
-      save();
-      setStatus('This browser could not open sharing; drawing downloaded instead');
+function share(){
+  /* Build the PNG synchronously so Safari still has the tap's user activation
+     when navigator.share() is called. Canvas.toBlob() can lose that activation. */
+  try{
+    const out=exportCanvas();
+    if(!navigator.share){save();setStatus('Sharing is unavailable in this browser; drawing downloaded instead');return}
+    const dataUrl=out.toDataURL('image/png');
+    const raw=atob(dataUrl.split(',')[1]);
+    const bytes=new Uint8Array(raw.length);
+    for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+    const file=new File([bytes],'Quick-Draw.png',{type:'image/png'});
+    if(navigator.canShare&&!navigator.canShare({files:[file]})){
+      save();setStatus('Safari cannot share this image directly; drawing downloaded instead');return;
     }
-  },'image/png');
+    let result;
+    try{
+      result=navigator.share({title:'Quick Draw',text:'My drawing from Quick Draw',files:[file]});
+    }catch(e){
+      save();setStatus('Could not open the share sheet; drawing downloaded instead');return;
+    }
+    Promise.resolve(result).then(()=>setStatus('Drawing shared')).catch(e=>{
+      if(e&&e.name==='AbortError'){setStatus('Sharing cancelled');return}
+      save();setStatus('Could not open the share sheet; drawing downloaded instead');
+    });
+  }catch(e){
+    save();setStatus('Could not prepare drawing to share; drawing downloaded instead',true);
+  }
 }
 $('shareButton').addEventListener('click',share);
 $('menuToggle').addEventListener('click',()=>{const m=$('menu'),open=m.hidden;m.hidden=!open;$('menuToggle').setAttribute('aria-expanded',String(open))});
