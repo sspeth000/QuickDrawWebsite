@@ -27,3 +27,11 @@
 .background-picker .background-swatch.selected{border:5px solid #212121;box-shadow:inset 0 0 0 2px transparent;}
 @media(max-width:480px){.control-strip{height:auto;min-height:0;flex-basis:auto}.palette-panel{height:auto;min-height:0;flex-basis:auto}.swatch{width:25px;height:38px;min-height:38px}}
 @media(min-width:900px){.control-strip{height:auto;min-height:0;flex-basis:auto}.palette-panel{height:auto;min-height:0;flex-basis:auto}}
+
+/* Correct the palette border layers to match res/drawable/pallet.xml and pallet_pressed.xml. */
+.swatch{border:1px solid transparent;border-radius:10px;}
+.swatch.selected{border:1px solid #212121;box-shadow:inset 0 0 0 1px transparent;}
+.background-picker .background-swatch{border:1px solid transparent;border-radius:10px;}
+.background-picker .background-swatch.selected{border:1px solid #212121;box-shadow:inset 0 0 0 1px transparent;}
+/* AppCompat Toolbar uses the action-bar minimum height; keep it consistent across viewport widths. */
+@media(min-width:900px){.appbar{height:56px;min-height:56px;flex-basis:56px}}
